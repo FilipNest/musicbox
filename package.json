@@ -9,7 +9,6 @@
   "bin": "index.js",
   "dependencies": {
     "btoa": "^1.1.2",
-    "express": "^4.15.4",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "handlebars": "^4.0.10",
