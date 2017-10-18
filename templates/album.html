@@ -1,0 +1,23 @@
+{{> header }}
+
+<h1>{{album}}</h1>
+<h2><a href="{{artistLink}}">{{artist}}</a></h2>
+<span class="track-count">{{tracks.length}}</span>
+
+{{#each tracks.tracks}}
+
+<article>
+
+  <h1>{{this.title}}</h1>
+  <h2>{{this.artist}}</h2>
+  <span class="track-number">{{this.track}}</span>
+
+  <audio controls>
+    <source src="{{this.path}}" type="audio/mpeg">
+  </audio>
+
+</article>
+
+{{/each}}
+
+{{> footer }}

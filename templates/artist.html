@@ -1,0 +1,25 @@
+{{> header }}
+
+<h1>{{artist}}</h1>
+
+{{#each albums.albums}}
+
+<article class="album">
+
+  <h1 class="album-title">{{@key}}</h1>
+
+  <span class="album-length">({{this.tracks.length}} tracks)</span>
+
+  {{#if this.1.picture}}
+    <img class="album-image" width="100" height="auto" src="{{{this.1.picture}}}"/>
+  {{else}}
+    <img class="album-no-image" width="100" height="auto" src="http://placekitten.com/g/300/300"/>
+  {{/if}}
+
+  <a class="listen" href="{{this.link}}">Listen</a>
+
+</article>
+
+{{/each}}
+
+{{> footer }}
