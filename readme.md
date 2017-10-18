@@ -1,6 +1,6 @@
 # MusicBox
 
-Create structured HTML and audio player from ID3 tagged mp3s
+Creates structured HTML and audio player from ID3 tagged mp3s.
 
 ## Usage
 
