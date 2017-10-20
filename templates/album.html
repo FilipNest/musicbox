@@ -1,23 +1,36 @@
 {{> header }}
 
-<h1>{{album}}</h1>
-<h2><a href="{{artistLink}}">{{artist}}</a></h2>
-<span class="track-count">{{tracks.length}}</span>
+<section>
+
+  <header>
+
+    {{#if this.1.picture}}
+    <img class="album-image" src="{{{this.1.picture}}}" /> {{else}}
+    <img class="album-image" src="http://placekitten.com/g/300/300" /> {{/if}}
+
+    <div class="album-info">
+
+      <h1>{{album}}</h1>
+      <span><a href="{{artistLink}}">{{artist}}</a></span>
+      <span class="track-count">Tracks: {{tracks.tracks.length}}</span>
+
+    </div>
+
+  </header>
 
 {{#each tracks.tracks}}
 
-<article>
+  <article class="track">
 
-  <h1>{{this.title}}</h1>
-  <h2>{{this.artist}}</h2>
-  <span class="track-number">{{this.track}}</span>
+    <h1>{{this.title}}</h1>
 
-  <audio controls>
-    <source src="{{this.path}}" type="audio/mpeg">
-  </audio>
+    <audio controls>
+      <source src="{{this.path}}" type="audio/mpeg">
+    </audio>
 
-</article>
+  </article>
 
 {{/each}}
+
 
 {{> footer }}

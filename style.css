@@ -1,0 +1,24 @@
+* {
+  font-family: sans-serif !important;
+}
+
+.album-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.album-info span {
+  display: block;
+}
+
+@media(min-width:800px) {
+  .album-image {
+    width: 300px;
+    height: 300px;
+    display: inline-block;
+  }
+  .album-info {
+    display: inline-block;
+  }
+}
