@@ -103,6 +103,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
         }
 
         let image = track.picture;
+
         if (image) {
           let base64String = "";
           for (let i = 0; i < image.data.length; i++) {
