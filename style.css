@@ -1,5 +1,6 @@
 * {
   font-family: sans-serif !important;
+  line-height: 1.5em;
 }
 
 body {
@@ -46,16 +47,18 @@ a:link, a:visited {
   }
 }
 
-.album-info h1 {
+h1 {
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
-.album-info span {
+span {
   display: block;
 }
 
-audio {width: 100%;}
+audio {
+  width: 100%;
+}
 
 .full {
   width: 900px;
