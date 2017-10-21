@@ -1,10 +1,15 @@
 {{> header }}
 
-<h1>{{artist}}</h1> {{#each albums.albums}}
+<h1>{{artist}}</h1>
+<span class="album count">{{albums.albums.length}} albums</span>
 
-<article class="album-list-item">
+<section class="album-list">
 
-  <a class="listen" href="{{this.link}}">
+{{#each albums.albums}}
+
+  <article class="album-list-item">
+
+    <a class="listen" href="{{this.link}}">
 
     {{#if this.tracks.1.picture}}
       <img class="album-image" src="{{{this.tracks.1.picture}}}"/>
@@ -14,13 +19,18 @@
 
     <div class="album-info">
 
-      <h1 class="album-title">{{@key}}</h1>
-      <span class="album-length">({{this.tracks.length}} tracks)</span>
+      <h1 class="album-title">{{{trimString this.name 30}}} {{#if this.tracks.0.year}}({{this.tracks.0.year}}){{/if}}</h1>
+      <span class="album-length">Tracks: {{this.tracks.length}}</span>
 
     </div>
 
   </a>
 
-</article>
+  </article>
 
-{{/each}} {{> footer }}
+
+{{/each}}
+
+</section>
+
+{{> footer }}

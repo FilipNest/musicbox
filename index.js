@@ -22,8 +22,16 @@ const templates = {
   index: Handlebars.compile(fs.readFileSync(__dirname + "/templates/index.html", "utf8"))
 };
 
+// Header and footer partials
+
 Handlebars.registerPartial('header', fs.readFileSync(__dirname + "/templates/header.html", "utf8"));
 Handlebars.registerPartial('footer', fs.readFileSync(__dirname + "/templates/footer.html", "utf8"));
+
+Handlebars.registerHelper('trimString', function(string, count) {
+
+  return new Handlebars.SafeString(string.length > count ? string.substring(0, count) + "..." : string);
+
+});
 
 // Search for mp3 files and turn into structured html templates
 
@@ -40,6 +48,33 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
       counter++
 
       if (counter === files.length) {
+
+        // Sort keyed objects into year sorted array for Handlebars template
+
+        Object.keys(database.music).forEach(function(artist) {
+
+          database.music[artist].albums = Object.keys(database.music[artist].albums).map(function(albumName) {
+
+            var album = database.music[artist].albums[albumName];
+
+            album.name = albumName;
+            album.year = parseInt(album.tracks[0].year);
+
+            if (isNaN(album.year)) {
+
+              album.year = 0;
+
+            }
+
+            return database.music[artist].albums[albumName]
+
+          }).sort(function(album1, album2) {
+
+            return album1.year - album2.year;
+
+          });
+
+        });
 
         fs.removeSync(process.cwd() + "/artists");
 
