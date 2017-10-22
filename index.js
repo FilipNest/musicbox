@@ -70,7 +70,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
           }).sort(function(album1, album2) {
 
-            return album1.year - album2.year;
+            return album2.year - album1.year;
 
           });
 
@@ -136,6 +136,30 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
           };
 
         }
+
+        // Extract lyrics and add newlines
+
+        if (track.lyrics && track.lyrics.lyrics) {
+
+          if (track.lyrics.lyrics) {
+
+            track.lyrics = track.lyrics.lyrics;
+
+          }
+
+          track.lyrics = track.lyrics.replace(/(\r\n|\n|\r)/gm, '<br>');
+
+        }
+
+        // Extract comment and add newlines
+
+        if (track.comment) {
+
+          track.comment = track.comment.text;
+
+        }
+
+        // Track image processing
 
         let image = track.picture;
 

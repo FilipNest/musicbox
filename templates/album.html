@@ -4,8 +4,8 @@
 
   <header>
 
-    {{#if this.tracks.tracks.1.picture}}
-    <img class="album-image" src="{{{this.tracks.tracks.1.picture}}}" /> {{else}}
+    {{#if this.tracks.tracks.0.picture}}
+    <img class="album-image" src="{{{this.tracks.tracks.0.picture}}}" /> {{else}}
     <img class="album-image" src="http://placekitten.com/g/300/300" /> {{/if}}
 
     <div class="album-info">
@@ -13,19 +13,27 @@
       <h1>{{album}}</h1>
       <span>by <a href="{{artistLink}}">{{artist}}</a></span>
       <span class="track-count">Tracks: {{tracks.tracks.length}}</span>
-      <span class="album-year">Released: {{tracks.tracks.1.year}}</span>
+      <span class="album-year">Released: {{tracks.tracks.0.year}}</span>
 
     </div>
 
   </header>
 
-  <br />
-
-{{#each tracks.tracks}}
+  <br /> {{#each tracks.tracks}}
 
   <article class="track">
 
     <h1>{{this.title}}</h1>
+    {{#if this.comment}}
+    <p class="info">{{this.comment}}</p>
+    {{/if}}
+
+    {{#if this.lyrics}}
+      <details>
+        <summary>Lyrics</summary>
+        <p class="lyrics">{{{this.lyrics}}}</p>
+      </details>
+    {{/if}}
 
     <audio controls>
       <source src="{{this.path}}" type="audio/mpeg">
@@ -33,7 +41,4 @@
 
   </article>
 
-{{/each}}
-
-
-{{> footer }}
+  {{/each}} {{> footer }}
