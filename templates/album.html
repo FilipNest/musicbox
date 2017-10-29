@@ -4,21 +4,21 @@
 
   <header>
 
-    <img class="album-image" src="{{{this.tracks.tracks.0.picture}}}" />
+    <img class="album-image" src="{{{this.tracks.0.picture}}}" />
 
     <div class="album-info">
 
       <h1>{{album}}</h1>
       <span>by <a href="{{artistLink}}">{{artist}}</a></span>
-      <span class="track-count">Tracks: {{tracks.tracks.length}}</span>
-      <span class="album-year">Released: {{tracks.tracks.0.year}}</span>
+      <span class="track-count">Tracks: {{tracks.length}}</span>
+      <span class="album-year">Released: {{tracks.0.year}}</span>
       <a class="back-link" href="../">Back to list</a>
 
     </div>
 
   </header>
 
-  <br /> {{#each tracks.tracks}}
+  <br /> {{#each tracks}}
 
   <article class="track">
 

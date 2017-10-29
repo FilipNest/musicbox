@@ -199,7 +199,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
           album: track.album,
           title: track.album + " | " + track.artist,
           artist: track.artist,
-          tracks: database.albums[track.album]
+          tracks: database.albums[track.album].tracks
         };
 
         complete();
