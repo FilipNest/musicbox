@@ -203,7 +203,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         // Handle OS directory structure
 
-        var dirname = output.split(path.sep).join("/");
+        var dirname = process.cwd().split(path.sep).join("/");
 
         track.path = file.split(dirname).join("");
 
