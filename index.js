@@ -133,7 +133,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
       })
 
-      fs.writeFileSync(output + "index.html", templates.index({
+      fs.writeFileSync(output + "/index.html", templates.index({
         artists: artistList
       }));
 
