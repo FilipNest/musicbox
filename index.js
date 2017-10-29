@@ -39,8 +39,8 @@ const templates = {
 
 // Header and footer partials
 
-Handlebars.registerPartial('header', fs.readFileSync(__dirname + "/templates/header.html", "utf8"));
-Handlebars.registerPartial('footer', fs.readFileSync(__dirname + "/templates/footer.html", "utf8"));
+Handlebars.registerPartial('header', fs.readFileSync(templatesDirectory + "/header.html", "utf8"));
+Handlebars.registerPartial('footer', fs.readFileSync(templatesDirectory + "/footer.html", "utf8"));
 
 Handlebars.registerHelper('trimString', function(string, count) {
 
