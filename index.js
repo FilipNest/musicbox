@@ -16,6 +16,8 @@ const tidyURL = (text) => text.replace(/[^a-zA-Z0-9-_]/g, '_');
 
 // Handlebars templates
 
+// Allow custom templates directory
+
 let directory;
 
 if(process.argv[2]){
@@ -25,6 +27,18 @@ if(process.argv[2]){
 } else {
 
   directory = __dirname + "/templates";
+
+}
+
+let output
+
+if(process.argv[3]){
+
+  output = process.cwd() + "/" + process.argv[3];
+
+} else {
+
+  output = process.cwd();
 
 }
 
@@ -88,7 +102,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         });
 
-        fs.removeSync(process.cwd() + "/artists");
+        fs.removeSync(output + "/artists");
 
         Object.keys(database.paths).forEach(function(url) {
 
@@ -96,13 +110,13 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
           try {
 
-            mkdirp.sync(process.cwd() + "/artists/" + url);
+            mkdirp.sync(output + "/artists/" + url);
 
           } catch (e) {
             // Already exists
           }
 
-          fs.writeFileSync(process.cwd() + "/artists/" + url + "/index.html", templates[item.type](item));
+          fs.writeFileSync(output + "/artists/" + url + "/index.html", templates[item.type](item));
 
         });
 
@@ -119,7 +133,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
       })
 
-      fs.writeFileSync(process.cwd() + "/artists/index.html", templates.index({
+      fs.writeFileSync(output + "/artists/index.html", templates.index({
         artists: artistList
       }));
 
@@ -189,7 +203,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         // Handle OS directory structure
 
-        var dirname = process.cwd().split(path.sep).join("/");
+        var dirname = output.split(path.sep).join("/");
 
         track.path = file.split(dirname).join("");
 
