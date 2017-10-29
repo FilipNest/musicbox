@@ -101,7 +101,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         Object.keys(database.paths).forEach(function(url) {
 
-          let item = database.paths[url];
+          let album = database.paths[url];
 
           try {
 
@@ -111,9 +111,14 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
             // Already exists
           }
 
-          fs.writeFileSync(output + url + "/index.html", templates[item.type](item));
+          fs.writeFileSync(output + url + "/index.html", templates.album(album));
 
         });
+
+        fs.writeFileSync(output + "/albums/index.html", templates.artist({
+          albums: database.albums,
+          title: "Music"
+        }));
 
       }
 
@@ -129,7 +134,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
         if (!database.albums[track.album]) {
 
           database.albums[track.album] = {
-            link: tidyURL(track.artist) + "/" + tidyURL(track.album),
+            link: tidyURL(track.album),
             tracks: []
           };
 
@@ -192,9 +197,8 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
         database.paths["/albums/" + tidyURL(track.album)] = {
           type: "album",
           album: track.album,
-          title: track.album + " by " + track.artist,
+          title: track.album + " | " + track.artist,
           artist: track.artist,
-          artistLink: tidyURL(track.artist),
           tracks: database.albums[track.album]
         };
 
