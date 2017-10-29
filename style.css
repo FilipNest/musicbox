@@ -3,10 +3,19 @@
   line-height: 1.5em;
 }
 
+.back-link {
+  color: black !important;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  display: inline-block;
+  font-size: 0.8em;
+  margin-top:5px;
+}
+
 body {
   text-align: center;
   color: white;
-  background-color: black;
 }
 
 a:link, a:visited {
