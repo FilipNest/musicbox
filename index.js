@@ -102,7 +102,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         });
 
-        fs.removeSync(output + "/artists");
+        fs.removeSync(output);
 
         Object.keys(database.paths).forEach(function(url) {
 
@@ -110,13 +110,13 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
           try {
 
-            mkdirp.sync(output + "/artists/" + url);
+            mkdirp.sync(output + url);
 
           } catch (e) {
             // Already exists
           }
 
-          fs.writeFileSync(output + "/artists/" + url + "/index.html", templates[item.type](item));
+          fs.writeFileSync(output + url + "/index.html", templates[item.type](item));
 
         });
 
@@ -128,12 +128,12 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         return {
           name: artist,
-          link: "/artists/" + tidyURL(artist)
+          link: tidyURL(artist)
         }
 
       })
 
-      fs.writeFileSync(output + "/artists/index.html", templates.index({
+      fs.writeFileSync(output + "index.html", templates.index({
         artists: artistList
       }));
 
@@ -157,7 +157,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
         if (!database.music[track.artist].albums[track.album]) {
 
           database.music[track.artist].albums[track.album] = {
-            link: "/artists/" + tidyURL(track.artist) + "/" + tidyURL(track.album),
+            link: tidyURL(track.artist) + "/" + tidyURL(track.album),
             tracks: []
           };
 
@@ -231,7 +231,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
           album: track.album,
           title: track.album + " by " + track.artist,
           artist: track.artist,
-          artistLink: "/artists/" + tidyURL(track.artist),
+          artistLink: tidyURL(track.artist),
           tracks: database.music[track.artist].albums[track.album]
         };
 
