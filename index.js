@@ -107,7 +107,7 @@ glob(musicDirectory + "/**/*.mp3", {}, function(er, files) {
 
         if (config.copyindex) {
 
-          fs.writeFileSync(process.cwd() + "/" + config.copyindex + "/index.html", templates.artist({
+          fs.writeFileSync(process.cwd() + "/" + config.copyindex, templates.artist({
             albums: database.albums,
             title: "Music",
             copy: "true"
