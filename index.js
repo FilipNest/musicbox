@@ -16,6 +16,20 @@ const tidyURL = (text) => text.replace(/[^a-zA-Z0-9-_]/g, '_');
 
 // Handlebars templates
 
+let directory;
+
+if(process.argv[2]){
+
+  directory = process.cwd() + "/" + process.argv[2];
+
+} else {
+
+  directory = __dirname;
+
+}
+
+console.log(directory);
+
 const templates = {
   artist: Handlebars.compile(fs.readFileSync(__dirname + "/templates/artist.html", "utf8")),
   album: Handlebars.compile(fs.readFileSync(__dirname + "/templates/album.html", "utf8")),
