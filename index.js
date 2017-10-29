@@ -24,14 +24,14 @@ if(process.argv[2]){
 
 } else {
 
-  directory = __dirname;
+  directory = __dirname + "/templates";
 
 }
 
 const templates = {
-  artist: Handlebars.compile(fs.readFileSync(directory + "/templates/artist.html", "utf8")),
-  album: Handlebars.compile(fs.readFileSync(directory + "/templates/album.html", "utf8")),
-  index: Handlebars.compile(fs.readFileSync(directory + "/templates/index.html", "utf8"))
+  artist: Handlebars.compile(fs.readFileSync(directory + "/artist.html", "utf8")),
+  album: Handlebars.compile(fs.readFileSync(directory + "/album.html", "utf8")),
+  index: Handlebars.compile(fs.readFileSync(directory + "/index.html", "utf8"))
 };
 
 // Header and footer partials
