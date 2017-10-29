@@ -20,7 +20,7 @@ const tidyURL = (text) => text.replace(/[^a-zA-Z0-9-_]/g, '_');
 
 let directory;
 
-if(process.argv[2]){
+if (process.argv[2]) {
 
   directory = process.cwd() + "/" + process.argv[2];
 
@@ -32,7 +32,7 @@ if(process.argv[2]){
 
 let output
 
-if(process.argv[3]){
+if (process.argv[3]) {
 
   output = process.cwd() + "/" + process.argv[3];
 
@@ -44,8 +44,7 @@ if(process.argv[3]){
 
 const templates = {
   artist: Handlebars.compile(fs.readFileSync(directory + "/artist.html", "utf8")),
-  album: Handlebars.compile(fs.readFileSync(directory + "/album.html", "utf8")),
-  index: Handlebars.compile(fs.readFileSync(directory + "/index.html", "utf8"))
+  album: Handlebars.compile(fs.readFileSync(directory + "/album.html", "utf8"))
 };
 
 // Header and footer partials
@@ -65,7 +64,7 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
   let database = {
     paths: {},
-    music: {}
+    albums: {}
   }
 
   let counter = 0,
@@ -77,32 +76,28 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         // Sort keyed objects into year sorted array for Handlebars template
 
-        Object.keys(database.music).forEach(function(artist) {
+        database.albums = Object.keys(database.albums).map(function(albumName) {
 
-          database.music[artist].albums = Object.keys(database.music[artist].albums).map(function(albumName) {
+          var album = database.albums[albumName];
 
-            var album = database.music[artist].albums[albumName];
+          album.name = albumName;
+          album.year = parseInt(album.tracks[0].year);
 
-            album.name = albumName;
-            album.year = parseInt(album.tracks[0].year);
+          if (isNaN(album.year)) {
 
-            if (isNaN(album.year)) {
+            album.year = 0;
 
-              album.year = 0;
+          }
 
-            }
+          return database.albums[albumName]
 
-            return database.music[artist].albums[albumName]
+        }).sort(function(album1, album2) {
 
-          }).sort(function(album1, album2) {
-
-            return album2.year - album1.year;
-
-          });
+          return album2.year - album1.year;
 
         });
 
-        fs.removeSync(output);
+        // fs.removeSync(output);
 
         Object.keys(database.paths).forEach(function(url) {
 
@@ -122,21 +117,6 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
       }
 
-      // Add index with artist directory
-
-      var artistList = Object.keys(database.music).map(function(artist) {
-
-        return {
-          name: artist,
-          link: tidyURL(artist)
-        }
-
-      })
-
-      fs.writeFileSync(output + "/index.html", templates.index({
-        artists: artistList
-      }));
-
     }
 
   files.forEach(function(file) {
@@ -146,17 +126,9 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         let track = output.tags;
 
-        if (!database.music[track.artist]) {
+        if (!database.albums[track.album]) {
 
-          database.music[track.artist] = {
-            albums: {}
-          };
-
-        }
-
-        if (!database.music[track.artist].albums[track.album]) {
-
-          database.music[track.artist].albums[track.album] = {
+          database.albums[track.album] = {
             link: tidyURL(track.artist) + "/" + tidyURL(track.album),
             tracks: []
           };
@@ -207,32 +179,23 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
 
         track.path = file.split(dirname).join("");
 
-        database.music[track.artist].albums[track.album].tracks.push(track);
+        database.albums[track.album].tracks.push(track);
 
         // Order by track number
 
-        database.music[track.artist].albums[track.album].tracks = database.music[track.artist].albums[track.album].tracks.sort(function(a, b) {
+        database.albums[track.album].tracks = database.albums[track.album].tracks.sort(function(a, b) {
 
           return parseInt(a.track) - parseInt(b.track);
 
         })
 
-        // Shortcuts for path lookup
-
-        database.paths["/" + tidyURL(track.artist)] = {
-          type: "artist",
-          artist: track.artist,
-          albums: database.music[track.artist],
-          title: track.artist
-        };
-
-        database.paths["/" + tidyURL(track.artist) + "/" + tidyURL(track.album)] = {
+        database.paths["/albums/" + tidyURL(track.album)] = {
           type: "album",
           album: track.album,
           title: track.album + " by " + track.artist,
           artist: track.artist,
           artistLink: tidyURL(track.artist),
-          tracks: database.music[track.artist].albums[track.album]
+          tracks: database.albums[track.album]
         };
 
         complete();
