@@ -16,35 +16,25 @@ const tidyURL = (text) => text.replace(/[^a-zA-Z0-9-_]/g, '_');
 
 // Handlebars templates
 
-// Allow custom templates directory
 
-let directory;
+let config = {};
 
-if (process.argv[2]) {
+process.argv.forEach(function(val, index, array) {
 
-  directory = process.cwd() + "/" + process.argv[2];
+  if (val.indexOf("=") !== -1) {
+    val = val.split("=");
+    config[val[0]] = val[1];
+  }
 
-} else {
+});
 
-  directory = __dirname + "/templates";
-
-}
-
-let output
-
-if (process.argv[3]) {
-
-  output = process.cwd() + "/" + process.argv[3];
-
-} else {
-
-  output = process.cwd();
-
-}
+let templatesDirectory = config.templates ? process.cwd() + "/" + config.templates : __dirname + "/templates";
+let output = config.output ? process.cwd() + "/" + config.output : process.cwd();
+let musicDirectory = config.music ? process.cwd() + "/" + config.music : process.cwd() + "/music";
 
 const templates = {
-  artist: Handlebars.compile(fs.readFileSync(directory + "/artist.html", "utf8")),
-  album: Handlebars.compile(fs.readFileSync(directory + "/album.html", "utf8"))
+  artist: Handlebars.compile(fs.readFileSync(templatesDirectory + "/artist.html", "utf8")),
+  album: Handlebars.compile(fs.readFileSync(templatesDirectory + "/album.html", "utf8"))
 };
 
 // Header and footer partials
@@ -60,7 +50,7 @@ Handlebars.registerHelper('trimString', function(string, count) {
 
 // Search for mp3 files and turn into structured html templates
 
-glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
+glob(musicDirectory + "/**/*.mp3", {}, function(er, files) {
 
   let database = {
     paths: {},
@@ -114,6 +104,16 @@ glob(process.cwd() + "/music/**/*.mp3", {}, function(er, files) {
           fs.writeFileSync(output + url + "/index.html", templates.album(album));
 
         });
+
+        if (config.copyindex) {
+
+          fs.writeFileSync(process.cwd() + "/" + config.copyindex + "/index.html", templates.artist({
+            albums: database.albums,
+            title: "Music",
+            copy: "true"
+          }));
+
+        }
 
         fs.writeFileSync(output + "/albums/index.html", templates.artist({
           albums: database.albums,
