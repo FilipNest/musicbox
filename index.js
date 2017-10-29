@@ -28,12 +28,10 @@ if(process.argv[2]){
 
 }
 
-console.log(directory);
-
 const templates = {
-  artist: Handlebars.compile(fs.readFileSync(__dirname + "/templates/artist.html", "utf8")),
-  album: Handlebars.compile(fs.readFileSync(__dirname + "/templates/album.html", "utf8")),
-  index: Handlebars.compile(fs.readFileSync(__dirname + "/templates/index.html", "utf8"))
+  artist: Handlebars.compile(fs.readFileSync(directory + "/templates/artist.html", "utf8")),
+  album: Handlebars.compile(fs.readFileSync(directory + "/templates/album.html", "utf8")),
+  index: Handlebars.compile(fs.readFileSync(directory + "/templates/index.html", "utf8"))
 };
 
 // Header and footer partials
